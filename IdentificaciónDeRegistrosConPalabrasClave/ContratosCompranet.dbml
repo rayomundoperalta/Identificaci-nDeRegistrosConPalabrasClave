@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InformacionAPF" Class="ContratosCompranetDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=REPH-NITRO-5;Initial Catalog=InformacionAPF;Persist Security Info=True;User ID=sa" SettingsObjectName="IdentificaciónDeRegistrosConPalabrasClave.Properties.Settings" SettingsPropertyName="InformacionAPFConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Contratos" Member="Contratos">
+    <Type Name="Contrato">
+      <Column Name="SEC" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="AÑO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GOBIERNO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="SIGLAS" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="DEPENDENCIA" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CLAVEUC" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="NOMBRE_DE_LA_UC" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="RESPONSABLE" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CODIGO_EXPEDIENTE" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="TITULO_EXPEDIENTE" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="PLANTILLA_EXPEDIENTE" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="NUMERO_PROCEDIMIENTO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="EXP_F_FALLO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="PROC_F_PUBLICACION" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="FECHA_APERTURA_PROPOSICIONES" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CARACTER" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="TIPO_CONTRATACION" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="TIPO_PROCEDIMIENTO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="FORMA_PROCEDIMIENTO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CODIGO_CONTRATO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="TITULO_CONTRATO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="FECHA_INICIO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="FECHA_FIN" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="IMPORTE_CONTRATO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="MONEDA" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ESTATUS_CONTRATO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ARCHIVADO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CONVENIO_MODIFICATORIO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="RAMO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CLAVE_PROGRAMA" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="APORTACION_FEDERAL" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="FECHA_CELEBRACION" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CONTRATO_MARCO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="IDENTIFICADOR_CM" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="COMPRA_CONSOLIDADA" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="PLURIANUAL" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CLAVE_CARTERA_SHCP" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ESTRATIFICACION_MUC" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="FOLIO_RUPC" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="PROVEEDOR_CONTRATISTA" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ESTRATIFICACION_MPC" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="SIGLAS_PAIS" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ESTATUS_EMPRESA" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CUENTA_ADMINISTRADA_POR" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="C_EXTERNO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ORGANISMO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ANUNCIO" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

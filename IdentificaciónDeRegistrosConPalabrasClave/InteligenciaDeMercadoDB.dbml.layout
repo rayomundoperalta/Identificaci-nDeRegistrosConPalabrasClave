@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 10.625" name="InteligenciaDeMercadoDB">
+  <DataContextMoniker Name="/InteligenciaDeMercadoDBDataContext" />
+  <nestedChildShapes>
+    <classShape Id="2fc6455a-5c14-491e-be7f-adfe465478c4" absoluteBounds="0.5, 0.5, 2, 9.8475569661458326">
+      <DataClassMoniker Name="/InteligenciaDeMercadoDBDataContext/Contratos_2017_2018_LT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="68223733-8213-42d6-b782-064eabbd46b3" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 9.2875569661458321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a2b31e56-4ad2-4022-ab9d-9d427a0f4bc2" absoluteBounds="5, 0.5, 2, 9.8475569661458326">
+      <DataClassMoniker Name="/InteligenciaDeMercadoDBDataContext/Contratos_2017_2018_LT_Convertido" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7d18349f-a6b2-4649-97b5-519d51ead91b" absoluteBounds="5.015, 0.96, 1.9700000000000002, 9.2875569661458321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
