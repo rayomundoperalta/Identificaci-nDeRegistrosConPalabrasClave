@@ -225,7 +225,10 @@ namespace RegexExample
             {
                 foreach (string palabra in ListaInventarioPalabras)
                 {
-                    file.WriteLine(palabra);
+                    if (palabra.Length > 2)
+                    {
+                        file.WriteLine(palabra);
+                    }
                 }
             }
 
