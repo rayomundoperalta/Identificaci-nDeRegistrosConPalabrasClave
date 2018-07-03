@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Linq;
-using System.Data;
-using System.Data.Linq;
 using IdentificaciónDeRegistrosConPalabrasClave;
 using System.Threading;
 
@@ -13,7 +9,8 @@ namespace RegexExample
 {
     static class Program
     {
-        static HashSet<string> InventarioPalabras = new HashSet<string>();
+        static private HashSet<string> InventarioPalabras = new HashSet<string>();
+        static private System.ComponentModel.IContainer componente;
 
         static void CreaInventarioPalabras(string FileName)
         {
@@ -176,7 +173,7 @@ namespace RegexExample
         static void Main(string[] args)
         {
             Console.WriteLine("Empezamos con la lectura de BD");
-            ExtracionCamposContratosAPF contratosTexto = new ExtracionCamposContratosAPF();
+            ExtracciónPalabras contratosTexto = new ExtracciónPalabras();
             Thread t2012 = new Thread(new ThreadStart(contratosTexto.Extrae2012));
             Thread t2013 = new Thread(new ThreadStart(contratosTexto.Extrae2013));
             Thread t2014 = new Thread(new ThreadStart(contratosTexto.Extrae2014));
@@ -201,7 +198,7 @@ namespace RegexExample
             t2017.Join();
             t2018.Join();
 
-            Console.WriteLine("Inventario de Palabras de la base de datos\nDame nombre de archivo:");
+            Console.WriteLine("Inventario de Palabras de la base de datos");
 
             CreaInventarioPalabras(@"D:\AnalisisPalabrasAPF\Palabras2012.txt");
             CreaInventarioPalabras(@"D:\AnalisisPalabrasAPF\Palabras2013.txt");
@@ -220,14 +217,50 @@ namespace RegexExample
                 ListaInventarioPalabras.Add(palabra);
             }
             ListaInventarioPalabras.Sort();
-            using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Inventario.txt"))
+            
+            componente = new System.ComponentModel.Container();
+            NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling(componente);
+            NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary(componente);
+            oDict.DictionaryFolder = @"D:\VSProjects\NetSpell.2.1.7\dic\";
+            oDict.DictionaryFile = "es-MX.dic";
+            oDict.Initialize();
+            oSpell.Dictionary = oDict;
+
+            if (oSpell.TestWord("acertijo"))
             {
-                foreach (string palabra in ListaInventarioPalabras)
+                Console.WriteLine("acertijo OK");
+            }
+            else
+            {
+                Console.WriteLine("acertijo NOK");
+            }
+            if (oSpell.TestWord("acercátelos"))
+            {
+                Console.WriteLine(" acercátelos OK");
+            }
+            else
+            {
+                Console.WriteLine("acercátelos NOK");
+            }
+
+            using (System.IO.StreamWriter fileOK =
+                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\InventarioOK.txt")) {
+                using (System.IO.StreamWriter fileNOK =
+                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\InventarioNOK.txt"))
                 {
-                    if (palabra.Length > 2)
+                    foreach (string palabra in ListaInventarioPalabras)
                     {
-                        file.WriteLine(palabra);
+                        if (palabra.Length > 2)
+                        {
+                            if (oSpell.TestWord(palabra))
+                            {
+                                fileOK.WriteLine(palabra + " OK");
+                            }
+                            else
+                            {
+                                fileNOK.WriteLine(palabra + " NOK");
+                            }
+                        }
                     }
                 }
             }

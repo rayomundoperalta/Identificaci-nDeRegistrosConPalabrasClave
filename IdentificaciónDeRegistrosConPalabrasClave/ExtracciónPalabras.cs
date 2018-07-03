@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Linq;
-using System.IO;
-
 
 namespace IdentificaciónDeRegistrosConPalabrasClave
 {
-    class ExtracionCamposContratosAPF
+    class ExtracciónPalabras
     {
         public void Extrae2012()
         {
@@ -26,7 +20,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
                     Console.Write("2012 " + i + "\r");
                     i++;
                 }
-            }  
+            }
         }
 
         public void Extrae2013()

@@ -31,7 +31,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NetSpell.SpellChecker, Version=2.1.7.41329, Culture=neutral, PublicKeyToken=318b389f0db66e46">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetSpell.2.1.7\bin\NetSpell.SpellChecker.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -49,7 +56,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContratosCompranet.dbml</DependentUpon>
     </Compile>
-    <Compile Include="ExtracionCamposContratosAPF.cs" />
+    <Compile Include="ExtracciónPalabras.cs" />
     <Compile Include="Grecopa.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
