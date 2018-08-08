@@ -44,5 +44,16 @@ namespace IdentificaciónDeRegistrosConPalabrasClave.Properties {
                 return ((string)(this["InformacionAPFConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=REPH-NITRO-5;Initial Catalog=InformacionAPF;Integrated Security=True;" +
+            "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False")]
+        public string InformacionAPFConnectionString1 {
+            get {
+                return ((string)(this["InformacionAPFConnectionString1"]));
+            }
+        }
     }
 }

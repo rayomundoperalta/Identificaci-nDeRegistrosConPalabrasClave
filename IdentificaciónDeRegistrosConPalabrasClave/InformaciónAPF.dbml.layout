@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 11.625" name="InformaciónAPF">
+  <DataContextMoniker Name="/InformaciónAPFDataContext" />
+  <nestedChildShapes>
+    <classShape Id="07ef94d9-a0b8-49ba-aa3e-4f2ab43ab3ad" absoluteBounds="1.75, 1.5, 2, 9.8475569661458326">
+      <DataClassMoniker Name="/InformaciónAPFDataContext/Contrato" />
+      <nestedChildShapes>
+        <elementListCompartment Id="18e6093f-1b6e-41a8-8cf9-e94493a132a4" absoluteBounds="1.7650000000000001, 1.96, 1.9700000000000002, 9.2875569661458321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

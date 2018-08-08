@@ -62,6 +62,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Grecopa.dbml</DependentUpon>
     </Compile>
+    <Compile Include="InformaciónAPF.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InformaciónAPF.dbml</DependentUpon>
+    </Compile>
     <Compile Include="InteligenciaDeMercadoDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,6 +90,11 @@
     <None Include="Grecopa.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Grecopa.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InformaciónAPF.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>InformaciónAPF.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="InteligenciaDeMercadoDB.dbml">
@@ -113,6 +123,11 @@
   <ItemGroup>
     <None Include="ContratosCompranet.dbml.layout">
       <DependentUpon>ContratosCompranet.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InformaciónAPF.dbml.layout">
+      <DependentUpon>InformaciónAPF.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
