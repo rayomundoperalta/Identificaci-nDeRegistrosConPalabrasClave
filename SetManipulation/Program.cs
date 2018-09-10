@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SetManipulation
 {
@@ -9,6 +10,7 @@ namespace SetManipulation
         {
             HashSet<int> evenNumbers = new HashSet<int>();
             HashSet<int> oddNumbers = new HashSet<int>();
+            HashSet<int> conjunto = new HashSet<int>();
 
             for (int i = 0; i < 5; i++)
             {
@@ -18,6 +20,15 @@ namespace SetManipulation
                 // Populate oddNumbers with just odd numbers.
                 oddNumbers.Add((i * 2) + 1);
             }
+
+            conjunto.Add(0);
+            conjunto.Add(1);
+            conjunto.Add(2);
+            conjunto.Add(3);
+            conjunto.Add(4);
+
+            int[] copiaConjunto = conjunto.ToArray<int>();
+            HashSet<int> conjunto2 = new HashSet<int>(copiaConjunto);
 
             Console.Write("evenNumbers contains {0} elements: ", evenNumbers.Count);
             DisplaySet(evenNumbers);
@@ -33,6 +44,15 @@ namespace SetManipulation
             Console.Write("numbers contains {0} elements: ", numbers.Count);
             DisplaySet(numbers);
 
+            Console.Write("conjunto contains {0} elements: ", conjunto.Count);
+            DisplaySet(conjunto);
+
+            Console.Write("conjunto IntersectionWith oddNumbers ... ", conjunto.Count);
+            conjunto.IntersectWith(oddNumbers);
+            DisplaySet(conjunto);
+
+            Console.Write("conjunto2 ... ");
+            DisplaySet(conjunto2);
             Console.ReadKey();
         }
 
