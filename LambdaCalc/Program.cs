@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Collections;
 using System.Globalization;
 using System.Threading;
+using System.ComponentModel;
 
 namespace IdentificacionRegistros
 {
@@ -120,7 +121,7 @@ namespace IdentificacionRegistros
             AdvanceToken();
 
             Console.WriteLine(exp);
-            Console.ReadKey();
+            
 
             ParseCategorías();
             DisplaySet(InventarioPalabras);
@@ -229,6 +230,7 @@ namespace IdentificacionRegistros
 
         public bool RegistroCalifica(string registro)
         {
+            Console.Write(".");
             var myRegex = new Regex(@"[a-zA-ZáéíóúÁÉÍÓÚÑñüÜÇç]+");
             MatchCollection PalabrasRegistro = myRegex.Matches(registro.ToLower());
             HashSet<string> inventario = new HashSet<string>(ArrayDePalabrasDelInventario);
@@ -237,9 +239,39 @@ namespace IdentificacionRegistros
             {
                 PalabrasPresentes.Add(palabraRegistro.Groups[0].Value.ToLower());
             }
+
             inventario.IntersectWith(PalabrasPresentes);
-            DisplaySet(inventario);
-            return inventario.Any<string>();
+            
+            if (inventario.Any<string>())
+            {
+                DisplaySet(inventario);
+                foreach(KeyValuePair<string, List<string>> entry in ListaDeConstrucciones)
+                {
+                    bool completa = true;
+                    foreach(string NombreCategoria in entry.Value)
+                    {
+                        String[] categoria = ListaDeCategorías[NombreCategoria].ToArray<string>();
+                        inventario = new HashSet<string>(PalabrasPresentes);
+                        HashSet<string> PalabrasCategoria = new HashSet<string>(categoria);
+                        inventario.IntersectWith(PalabrasCategoria);
+                        completa &= inventario.Any<string>();
+                    }
+                    if (completa)
+                    {
+                        return completa;
+                    }
+                    else
+                    {
+                        completa = false;
+                    }
+                       
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
             
             // Suponemos que las palabras no se repiten
             // queremos evitar la búsqueda de las palabras en toda la estructura de datos
