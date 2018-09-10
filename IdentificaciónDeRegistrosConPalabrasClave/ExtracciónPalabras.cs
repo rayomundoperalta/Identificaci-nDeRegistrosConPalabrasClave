@@ -8,7 +8,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2012()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2012 select contrato;
             using (System.IO.StreamWriter file =
                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2012.txt"))
@@ -26,7 +26,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2013()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2013 select contrato;
             using (System.IO.StreamWriter file =
                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2013.txt"))
@@ -44,7 +44,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2014()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2014 select contrato;
             using (System.IO.StreamWriter file =
                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2014.txt"))
@@ -62,7 +62,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2015()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2015 select contrato;
             using (System.IO.StreamWriter file =
                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2015.txt"))
@@ -80,7 +80,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2016()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2016 select contrato;
             using (System.IO.StreamWriter file =
                     new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2016.txt"))
@@ -98,7 +98,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2017()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2017 select contrato;
             using (System.IO.StreamWriter file =
                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2017.txt"))
@@ -116,7 +116,7 @@ namespace IdentificaciónDeRegistrosConPalabrasClave
         public void Extrae2018()
         {
             long i = 1;
-            ContratosCompranetDataContext contratosDataContext = new ContratosCompranetDataContext();
+            InformaciónAPFDataContext contratosDataContext = new InformaciónAPFDataContext();
             var data = from contrato in contratosDataContext.Contratos where contrato.AÑO == 2018 select contrato;
             using (System.IO.StreamWriter file =
                    new System.IO.StreamWriter(@"D:\AnalisisPalabrasAPF\Palabras2018.txt"))

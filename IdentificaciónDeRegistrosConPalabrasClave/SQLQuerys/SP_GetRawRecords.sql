@@ -1,0 +1,13 @@
+﻿SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE GetRawRecords
+	@AÑOMinimo int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT * from [dbo].[Contratos] where AÑO >= @AÑOMinimo
+END
+GO

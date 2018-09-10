@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using IdentificaciónDeRegistrosConPalabrasClave;
 using System.Threading;
+using System.Data;
+using System.Data.Linq;
 
 namespace RegexExample
 {
@@ -170,56 +172,20 @@ namespace RegexExample
             */
         }
 
-        static void SeleccionaRegistros(string FileName)
+        static void SeleccionaRegistros()
         {
-            Console.WriteLine("Procesamos " + FileName);
-            //FileStream ListaProveedores = new FileStream(Console.ReadLine(), FileMode.Open, FileAccess.Read);
-            //StreamReader TodosProveedores = new StreamReader(ListaProveedores, System.Text.Encoding.GetEncoding("iso-8859-1"));
-
-            // TodosProveedores.Close();
-            // ListaProveedores.Close();
-
+            Console.WriteLine("Procesamos Selección de servicios");
+            
             InformaciónAPFDataContext IMData = new InformaciónAPFDataContext();
-            Console.WriteLine("cargamos la base");
-            var BD = from reg in IMData.Contratos select reg;
-
+            
             var myRegex = new Regex(@"[a-zA-ZáéíóúÁÉÍÓÚÑñüÜÇç]+");
-            string palabras = File.ReadAllText(FileName);
-            string textoOrig = " ";
-            //foreach (var registro in BD)
-            //{
-            //    textoOrig += registro.TITULO_EXPEDIENTE + " " + registro.TITULO_CONTRATO + " " + registro.PROVEEDOR_CONTRATISTA + " ";
-            //}
-            //foreach (var registro in BD1)
-            //{
-            //    textoOrig += registro.PROVEEDOR_CONTRATISTA + " ";
-            //}
-            //foreach (var registro in BD2)
-            //{
-            //    textoOrig += registro.PROVEEDOR_CONTRATISTA + " ";
-            //}
-            //Console.WriteLine(textoOrig);
-            Console.WriteLine("Separamos las Palabras");
-            //Console.ReadKey();
-            MatchCollection AllMatches = myRegex.Matches(palabras);
-            if (AllMatches.Count > 0)
-            {
-                foreach (Match someMatch in AllMatches)
-                {
-                    if (!InventarioPalabras.Contains(someMatch.Groups[0].Value))
-                    {
-                        InventarioPalabras.Add(someMatch.Groups[0].Value);
-                    }
-                }
-            }
-
-            /*
-             * Console.WriteLine("Leemos palabras de la categoria buscada");
+            
+            Console.WriteLine("Leemos palabras de la categoria buscada");
             int cuantos = 0;
 
             HashSet<string> CategoriaDePalabras = new HashSet<string>();
 
-            FileStream pb = new FileStream(@"D:\CompranetAbril2018\palabrasEscogidas.txt", FileMode.Open, FileAccess.Read);
+            FileStream pb = new FileStream(@"D:\CompranetAbril2018\CompetenciaOutsourcing.txt", FileMode.Open, FileAccess.Read);
             StreamReader sr = new StreamReader(pb, System.Text.Encoding.GetEncoding("iso-8859-1"));
             string palabras = sr.ReadToEnd();
             sr.Close();
@@ -230,23 +196,25 @@ namespace RegexExample
             foreach (Match SomeMatch in PalabrasEscogidas)
             {
                 CategoriaDePalabras.Add(SomeMatch.Groups[0].Value);
+                Console.WriteLine(SomeMatch.Groups[0].Value);
             }
-            
+            Console.WriteLine("Estas son las palabras buscadas");
+            Console.ReadKey();
             Console.WriteLine("Leemos la BD para buscar los registros de interes");
-            */
+
             /* La idea es simple, obtenemos los campos que pueden tener texto únicamente y usaando la expresión regular sacamos
              * las palabras, buscamos en el hashset y cuando haya una coincidencia seleccionamos el registro
              * este procedimiento debe ser mejorado con el análisis de frecuencias de las palabas para ver si los textos
              * realmente son de interés, vamos a probar por ahora asi en lo que definimos como hacer el paso siguiente
              */
 
-            /*
-            //var BD = from reg in IMData.Contratos_2017_2018_LTs select reg;
-            if (File.Exists(@"D:\CompranetAbril2018\registrosSeleccionados.txt"))
+            var ContratosDataSet = IMData.GetRawRecords(2017);
+            if (File.Exists(@"D:\CompranetAbril2018\registrosCompetenciaSep_2018.txt"))
             {
-                File.Delete(@"D:\CompranetAbril2018\registrosSeleccionados.txt");
+                File.Delete(@"D:\CompranetAbril2018\registrosCompetenciaSep_2018.txt");
+                Console.WriteLine("Borramos los registros antes seleccionados");
             }
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"D:\CompranetAbril2018\registrosSeleccionados.txt", false, System.Text.Encoding.GetEncoding("iso-8859-1")))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"D:\CompranetAbril2018\registrosCompetenciaSep_2018.txt", false, System.Text.Encoding.GetEncoding("iso-8859-1")))
             {
                 file.WriteLine("SEC \t" +
                                "AÑO \t" +
@@ -264,14 +232,18 @@ namespace RegexExample
                                "IMPORTE_CONTRATO \t" +
                                "PROVEEDOR_CONTRATISTA \t" +
                                "ANUNCIO");
-                foreach (var registro in BD)
+                long i = 0;
+                foreach (var registro in ContratosDataSet)
                 {
-                    string texto = registro.TITULO_EXPEDIENTE + " " + registro.TITULO_CONTRATO + " " + registro.PROVEEDOR_CONTRATISTA;
+                    i++;
+                    string texto = registro.TITULO_EXPEDIENTE + " " + registro.TITULO_CONTRATO;
+                    
                     MatchCollection PalabrasRegistro = myRegex.Matches(texto);
 
                     foreach (Match palabraRegistro in PalabrasRegistro)
                     {
-                        if (CategoriaDePalabras.Contains(palabraRegistro.Groups[0].Value))
+                        //Console.WriteLine(palabraRegistro.Groups[0].Value.ToLower());
+                        if (CategoriaDePalabras.Contains(palabraRegistro.Groups[0].Value.ToLower()))
                         {
 
                             string regSeleccionado =
@@ -292,41 +264,24 @@ namespace RegexExample
                                 registro.PROVEEDOR_CONTRATISTA + " \t" +
                                 registro.ANUNCIO + " ";
                             file.WriteLine(regSeleccionado);
-                            //file.WriteLine(palabraRegistro.Groups[0].Value);
-                            if (registro.SEC == 35836 && registro.AÑO == 2017)
-                            {
-                                Console.WriteLine(regSeleccionado);
-                                Console.WriteLine(registro.RESPONSABLE);
-
-                                String sal = registro.TITULO_EXPEDIENTE;
-                                if (sal[0] == 8220)
-                                {
-                                    Console.WriteLine("si son comillas ");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("--------------- No son iguales {0}-{1}", (int) sal[0], (int) '"');
-                                }
-                                byte[] ba = System.Text.Encoding.Default.GetBytes(sal);
-                                Console.WriteLine(sal);
-                                var hexString = BitConverter.ToString(ba);
-                                Console.WriteLine(hexString);
-                                Console.WriteLine(sal);
-                            }
                             cuantos++;
                             break;
                         }
                     }
                 }
+                Console.WriteLine("Registros Leidos " + i);
             }
-
-            Console.WriteLine("Terminado " + cuantos);
+            Console.WriteLine("Terminado, registros encontrados " + cuantos);
+            Console.WriteLine("F I N");
             Console.ReadKey();
-            */
         }
 
         static void Main(string[] args)
         {
+            SeleccionaRegistros();
+            Console.WriteLine("Termine de seleccionar registros");
+            Console.WriteLine("Ojo Ojo Ojo");
+            Console.ReadKey();
             Console.WriteLine("Empezamos con la lectura de BD");
             ExtracciónPalabras contratosTexto = new ExtracciónPalabras();
             Thread t2012 = new Thread(new ThreadStart(contratosTexto.Extrae2012));

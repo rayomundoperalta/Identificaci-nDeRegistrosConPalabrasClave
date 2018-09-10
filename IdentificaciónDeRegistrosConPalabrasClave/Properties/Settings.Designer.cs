@@ -26,19 +26,9 @@ namespace IdentificaciónDeRegistrosConPalabrasClave.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=REPH-NITRO-5;Initial Catalog=InteligenciaMercado;Persist Security Inf" +
-            "o=True;User ID=sa;Password=Samahil14200")]
-        public string InteligenciaMercadoConnectionString {
-            get {
-                return ((string)(this["InteligenciaMercadoConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=REPH-NITRO-5;Initial Catalog=InformacionAPF;Persist Security Info=Tru" +
-            "e;User ID=sa;Password=Samahil14200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=REPH-NITRO-5;Initial Catalog=InformacionAPF;Integrated Security=True;" +
+            "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;user=sa;password=S" +
+            "amahil14200")]
         public string InformacionAPFConnectionString {
             get {
                 return ((string)(this["InformacionAPFConnectionString"]));
