@@ -88,5 +88,11 @@
   <ItemGroup>
     <Content Include="SQLQuerys\SP_GetRawRecords.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LambdaCalc\IdentificadorRegistros.csproj">
+      <Project>{5ff59eb6-72e8-46e5-9986-dc7c4be038d9}</Project>
+      <Name>IdentificadorRegistros</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

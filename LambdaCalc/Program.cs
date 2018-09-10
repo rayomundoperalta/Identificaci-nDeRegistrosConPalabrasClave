@@ -7,7 +7,7 @@ using System.Collections;
 using System.Globalization;
 using System.Threading;
 
-namespace IdentificadorRegistros
+namespace IdentificacionRegistros
 {
     // Tokens that represent the input
     internal enum Token
@@ -93,6 +93,7 @@ namespace IdentificadorRegistros
         private Dictionary<string, HashSet<string>> ListaDeCategorías = new Dictionary<string, HashSet<string>>();
         private Dictionary<string, List<string>> ListaDeConstrucciones = new Dictionary<string, List<string>>();
         private HashSet<string> InventarioPalabras = new HashSet<string>();
+        private string[] ArrayDePalabrasDelInventario;
         private int MínimoPalabras = 0;
         private int MáximoPalabras = 0;
 
@@ -118,7 +119,11 @@ namespace IdentificadorRegistros
             this.tokens = exp.GetTokens().GetEnumerator();
             AdvanceToken();
 
+            Console.WriteLine(exp);
+            Console.ReadKey();
+
             ParseCategorías();
+            DisplaySet(InventarioPalabras);
             ParseCombinaciones();
 
             foreach (KeyValuePair<string, HashSet<string>> entry in ListaDeCategorías)
@@ -182,6 +187,7 @@ namespace IdentificadorRegistros
                 else
                 {
                     ListaDeCategorías.Add(NombreCategoria, Categoría);
+                    ArrayDePalabrasDelInventario = InventarioPalabras.ToArray<string>();
                 }    
             }
         }
@@ -225,24 +231,42 @@ namespace IdentificadorRegistros
         {
             var myRegex = new Regex(@"[a-zA-ZáéíóúÁÉÍÓÚÑñüÜÇç]+");
             MatchCollection PalabrasRegistro = myRegex.Matches(registro.ToLower());
-            int cuenta = 0;
+            HashSet<string> inventario = new HashSet<string>(ArrayDePalabrasDelInventario);
+            HashSet<string> PalabrasPresentes = new HashSet<string>();
             foreach (Match palabraRegistro in PalabrasRegistro)
             {
-                if (InventarioPalabras.Contains(palabraRegistro.Groups[0].Value.ToLower())) cuenta++;
+                PalabrasPresentes.Add(palabraRegistro.Groups[0].Value.ToLower());
             }
+            inventario.IntersectWith(PalabrasPresentes);
+            DisplaySet(inventario);
+            return inventario.Any<string>();
             
             // Suponemos que las palabras no se repiten
             // queremos evitar la búsqueda de las palabras en toda la estructura de datos
             // hacer la búsqueda únicamente cuando haya chance de encontrar algo
-
+            /*
             if ((MínimoPalabras <= cuenta) && (cuenta <= MáximoPalabras))
             {
+               
                 foreach(KeyValuePair<string, List<string>> entry in ListaDeConstrucciones)
                 {
-
+                    foreach(string str in entry.Value)
+                    {
+                        HashSet<string> PalabrasDelText = new HashSet<string>(listaPalabras);
+                    }
                 }
             }
-            return false;
+            */
+        }
+
+        private static void DisplaySet(HashSet<string> set)
+        {
+            Console.Write("{");
+            foreach (string str in set)
+            {
+                Console.Write(" {0}", str);
+            }
+            Console.WriteLine(" }");
         }
     }
 

@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using IdentificaciónDeRegistrosConPalabrasClave;
 using System.Threading;
-using System.Data;
-using System.Data.Linq;
+using IdentificacionRegistros;
 
 namespace RegexExample
 {
@@ -174,6 +173,7 @@ namespace RegexExample
 
         static void SeleccionaRegistros()
         {
+            
             Console.WriteLine("Procesamos Selección de servicios");
             
             InformaciónAPFDataContext IMData = new InformaciónAPFDataContext();
@@ -185,11 +185,27 @@ namespace RegexExample
 
             HashSet<string> CategoriaDePalabras = new HashSet<string>();
 
-            FileStream pb = new FileStream(@"D:\CompranetAbril2018\CompetenciaOutsourcing.txt", FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(pb, System.Text.Encoding.GetEncoding("iso-8859-1"));
+            FileStream pb = new FileStream(@"D:\CompranetAbril2018\DefiniciónDeFrases.txt", FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(pb); //, System.Text.Encoding.GetEncoding("iso-8859-1"));
             string palabras = sr.ReadToEnd();
             sr.Close();
             pb.Close();
+            Console.WriteLine(palabras);
+            IdentificadorRegistros IR = new IdentificadorRegistros(palabras);
+            /*
+            IdentificadorRegistros IR = new IdentificadorRegistros(@"#1: outsorcing outsou outsourcing outsoursing outsurcing;
+               #2: administración administracióny administracioon administracioón administracón;
+               #3: personal depersonal dpersonal epersonal integralpersonal personalpara personals;
+               #4: servicios servicioss serviciosy sservicio sservicios vservicios yservicios;
+               #5: integrales integral  integralpersonal;
+               #6: técnicos técnico;
+               &1: #1;
+               &2: #2 #3;
+               &3: #4 #5;
+               &4: #4 #6; ");
+               */
+
+            /*
             Console.WriteLine("Las separamos con regex");
             MatchCollection PalabrasEscogidas = myRegex.Matches(palabras);
             Console.WriteLine("Las almacenamos en un HashSet");
@@ -200,7 +216,8 @@ namespace RegexExample
             }
             Console.WriteLine("Estas son las palabras buscadas");
             Console.ReadKey();
-            Console.WriteLine("Leemos la BD para buscar los registros de interes");
+            */
+            Console.WriteLine("Leemos la BD para buscar los registros de interés");
 
             /* La idea es simple, obtenemos los campos que pueden tener texto únicamente y usaando la expresión regular sacamos
              * las palabras, buscamos en el hashset y cuando haya una coincidencia seleccionamos el registro
@@ -237,7 +254,29 @@ namespace RegexExample
                 {
                     i++;
                     string texto = registro.TITULO_EXPEDIENTE + " " + registro.TITULO_CONTRATO;
-                    
+                    if (IR.RegistroCalifica(texto))
+                    {
+                        string regSeleccionado =
+                                registro.SEC.ToString() + " \t" +
+                                registro.AÑO.ToString() + " \t" +
+                                registro.SIGLAS + " \t" +
+                                registro.DEPENDENCIA + " \t" +
+                                registro.NOMBRE_DE_LA_UC + " \t" +
+                                registro.RESPONSABLE + " \t" +
+                                registro.TITULO_EXPEDIENTE + " \t" +
+                                registro.NUMERO_PROCEDIMIENTO + " \t" +
+                                registro.TIPO_CONTRATACION + " \t" +
+                                registro.TIPO_PROCEDIMIENTO + " \t" +
+                                registro.FORMA_PROCEDIMIENTO + " \t" +
+                                registro.TITULO_CONTRATO + " \t" +
+                                registro.FECHA_FIN + " \t" +
+                                registro.IMPORTE_CONTRATO + " \t" +
+                                registro.PROVEEDOR_CONTRATISTA + " \t" +
+                                registro.ANUNCIO + " ";
+                        file.WriteLine(regSeleccionado);
+                        cuantos++;
+                    }
+                    /*
                     MatchCollection PalabrasRegistro = myRegex.Matches(texto);
 
                     foreach (Match palabraRegistro in PalabrasRegistro)
@@ -268,6 +307,7 @@ namespace RegexExample
                             break;
                         }
                     }
+                    */
                 }
                 Console.WriteLine("Registros Leidos " + i);
             }
