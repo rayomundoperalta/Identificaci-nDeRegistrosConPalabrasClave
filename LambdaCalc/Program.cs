@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Globalization;
+using System.Threading;
 
 namespace IdentificadorRegistros
 {
@@ -89,8 +90,11 @@ namespace IdentificadorRegistros
     /// </summary>
     public class IdentificadorRegistros
     {
-        public Dictionary<string, HashSet<string>> ListaDeCategorías = new Dictionary<string, HashSet<string>>();
-        public Dictionary<string, List<string>> ListaDeConstrucciones = new Dictionary<string, List<string>>();
+        private Dictionary<string, HashSet<string>> ListaDeCategorías = new Dictionary<string, HashSet<string>>();
+        private Dictionary<string, List<string>> ListaDeConstrucciones = new Dictionary<string, List<string>>();
+        private HashSet<string> InventarioPalabras = new HashSet<string>();
+        private int MínimoPalabras = 0;
+        private int MáximoPalabras = 0;
 
         TokenEntity lastToken;
         // Holds the tokens enumurator
@@ -110,7 +114,29 @@ namespace IdentificadorRegistros
         /// <param name="exp">Input expression, ie: (a, b) => a + b * 2</param>
         public IdentificadorRegistros(string exp)
         {
-            ParseIdentificador(exp);
+            Console.WriteLine("Compilamos la definición de frases para buscar registros de interés");
+            this.tokens = exp.GetTokens().GetEnumerator();
+            AdvanceToken();
+
+            ParseCategorías();
+            ParseCombinaciones();
+
+            foreach (KeyValuePair<string, HashSet<string>> entry in ListaDeCategorías)
+            {
+                Console.WriteLine(entry.Key + " " + string.Join(", ", entry.Value));
+            }
+
+            foreach (KeyValuePair<string, List<string>> entry in ListaDeConstrucciones)
+            {
+                string contenido = "";
+                for (int i = 0; i < entry.Value.Count; i++)
+                {
+                    contenido += entry.Value[i] + " ";
+                }
+                Console.WriteLine(entry.Key + " " + contenido);
+            }
+
+            Console.WriteLine("C o m p i l a d o");
         }
 
         private TokenEntity CurrentToken { get { return this.tokens.Current; } }
@@ -134,34 +160,22 @@ namespace IdentificadorRegistros
             return false;
         }
 
-        // Parse the given expression, expect ([[[<param1>],<param2>],..]) => <body>
-        private void ParseIdentificador(string exp)
-        {
-            Console.WriteLine("Compilamos la definición de frases para buscar registros de interés");
-            this.tokens = exp.GetTokens().GetEnumerator();
-            AdvanceToken();
-
-            ParseCategorías();
-            ParseCombinaciones();
-        }
-
         private void ParseCategorías()
         {
             while (CheckToken(Token.Categoría))
             {
                 HashSet<string> Categoría = new HashSet<string>();
-                int NumeroPalabras = 0;
                 string NombreCategoria = LastToken.Value;
                 if (!CheckToken(Token.Definición))
                     throw GetErrorException("Esperamos ':'", CurrentToken);
                 while (CheckToken(Token.PalabraEspañol))
                 {
-                    NumeroPalabras++;
                     Categoría.Add(LastToken.Value);
+                    if (!InventarioPalabras.Contains(LastToken.Value)) InventarioPalabras.Add(LastToken.Value);
                 }
                 if (!CheckToken(Token.FinDefinición))
                     throw GetErrorException("Esperamos ';'", CurrentToken);
-                if (NumeroPalabras == 0)
+                if (Categoría.Count == 0)
                 {
                     throw GetErrorException("Una Categoría debe tener al menos una palabra", CurrentToken);
                 }
@@ -177,7 +191,6 @@ namespace IdentificadorRegistros
             while (CheckToken(Token.Construcción))
             {
                 List<string> CombinaciónDeCategorias = new List<string>();
-                int NúmeroDeCategorias = 0;
                 string NombreConstrucción;
 
                 NombreConstrucción = LastToken.Value;
@@ -185,14 +198,20 @@ namespace IdentificadorRegistros
                     throw GetErrorException("Esperamos ':'", CurrentToken);
                 while (CheckToken(Token.Categoría))
                 {
-                    NúmeroDeCategorias++;
                     CombinaciónDeCategorias.Add(LastToken.Value);
                 }
                 if (!CheckToken(Token.FinDefinición))
                     throw GetErrorException("Esperamos ';'", CurrentToken);
-                if (NúmeroDeCategorias == 0)
+                if (CombinaciónDeCategorias.Count == 0)
+                {
                     throw GetErrorException("Esperamos al menos una categoría por combinación", CurrentToken);
-                ListaDeConstrucciones.Add(NombreConstrucción, CombinaciónDeCategorias);
+                }
+                else
+                {
+                    ListaDeConstrucciones.Add(NombreConstrucción, CombinaciónDeCategorias);
+                    if (CombinaciónDeCategorias.Count < MínimoPalabras) MínimoPalabras = CombinaciónDeCategorias.Count;
+                    if (CombinaciónDeCategorias.Count > MáximoPalabras) MáximoPalabras = CombinaciónDeCategorias.Count;
+                }
             }
         }
 
@@ -200,6 +219,30 @@ namespace IdentificadorRegistros
         private Exception GetErrorException(string p, TokenEntity tokenEntity)
         {
             return new Exception(string.Format("Error at '{0}': {1}", tokenEntity != null ? tokenEntity.StartPos : 0, p));
+        }
+
+        public bool RegistroCalifica(string registro)
+        {
+            var myRegex = new Regex(@"[a-zA-ZáéíóúÁÉÍÓÚÑñüÜÇç]+");
+            MatchCollection PalabrasRegistro = myRegex.Matches(registro.ToLower());
+            int cuenta = 0;
+            foreach (Match palabraRegistro in PalabrasRegistro)
+            {
+                if (InventarioPalabras.Contains(palabraRegistro.Groups[0].Value.ToLower())) cuenta++;
+            }
+            
+            // Suponemos que las palabras no se repiten
+            // queremos evitar la búsqueda de las palabras en toda la estructura de datos
+            // hacer la búsqueda únicamente cuando haya chance de encontrar algo
+
+            if ((MínimoPalabras <= cuenta) && (cuenta <= MáximoPalabras))
+            {
+                foreach(KeyValuePair<string, List<string>> entry in ListaDeConstrucciones)
+                {
+
+                }
+            }
+            return false;
         }
     }
 
@@ -217,22 +260,7 @@ namespace IdentificadorRegistros
                &2: #2 #3;
                &3: #4 #5;
                &4: #4 #6; ");
-            foreach (KeyValuePair<string, HashSet<string>> entry in lc.ListaDeCategorías)
-            {
-                Console.WriteLine(entry.Key + " " + string.Join(", ", entry.Value));
-            }
             
-
-            foreach (KeyValuePair<string, List<string>> entry in lc.ListaDeConstrucciones)
-            {
-                string contenido = "";
-                for (int i = 0; i < entry.Value.Count; i++)
-                {
-                    contenido += entry.Value[i] + " ";
-                }
-                Console.WriteLine(entry.Key + " " + contenido);
-            }
-            Console.WriteLine("T E R M I N A M O S");
             Console.ReadKey();
         }
     }
