@@ -91,7 +91,7 @@ namespace IdentificacionRegistros
     /// </summary>
     public class IdentificadorRegistros
     {
-        private Dictionary<string, HashSet<string>> ListaDeCategorías = new Dictionary<string, HashSet<string>>();
+        private Dictionary<string, string[]> ListaDeCategorías = new Dictionary<string, string[]>();
         private Dictionary<string, List<string>> ListaDeConstrucciones = new Dictionary<string, List<string>>();
         private HashSet<string> InventarioPalabras = new HashSet<string>();
         private string[] ArrayDePalabrasDelInventario;
@@ -127,7 +127,7 @@ namespace IdentificacionRegistros
             DisplaySet(InventarioPalabras);
             ParseCombinaciones();
 
-            foreach (KeyValuePair<string, HashSet<string>> entry in ListaDeCategorías)
+            foreach (KeyValuePair<string, String[]> entry in ListaDeCategorías)
             {
                 Console.WriteLine(entry.Key + " " + string.Join(", ", entry.Value));
             }
@@ -170,18 +170,20 @@ namespace IdentificacionRegistros
         {
             while (CheckToken(Token.Categoría))
             {
-                HashSet<string> Categoría = new HashSet<string>();
+                string[] Categoría = new string[] { };
                 string NombreCategoria = LastToken.Value;
                 if (!CheckToken(Token.Definición))
                     throw GetErrorException("Esperamos ':'", CurrentToken);
                 while (CheckToken(Token.PalabraEspañol))
                 {
-                    Categoría.Add(LastToken.Value);
+                    Array.Resize(ref Categoría, Categoría.Length + 1);
+                    Categoría[Categoría.Length - 1] = LastToken.Value;
+                   
                     if (!InventarioPalabras.Contains(LastToken.Value)) InventarioPalabras.Add(LastToken.Value);
                 }
                 if (!CheckToken(Token.FinDefinición))
                     throw GetErrorException("Esperamos ';'", CurrentToken);
-                if (Categoría.Count == 0)
+                if (Categoría.Length == 0)
                 {
                     throw GetErrorException("Una Categoría debe tener al menos una palabra", CurrentToken);
                 }
@@ -230,7 +232,6 @@ namespace IdentificacionRegistros
 
         public bool RegistroCalifica(string registro)
         {
-            Console.Write(".");
             var myRegex = new Regex(@"[a-zA-ZáéíóúÁÉÍÓÚÑñüÜÇç]+");
             MatchCollection PalabrasRegistro = myRegex.Matches(registro.ToLower());
             HashSet<string> inventario = new HashSet<string>(ArrayDePalabrasDelInventario);
@@ -244,20 +245,21 @@ namespace IdentificacionRegistros
             
             if (inventario.Any<string>())
             {
-                DisplaySet(inventario);
                 foreach(KeyValuePair<string, List<string>> entry in ListaDeConstrucciones)
                 {
                     bool completa = true;
+                    string conjuntos = "";
                     foreach(string NombreCategoria in entry.Value)
                     {
-                        String[] categoria = ListaDeCategorías[NombreCategoria].ToArray<string>();
                         inventario = new HashSet<string>(PalabrasPresentes);
-                        HashSet<string> PalabrasCategoria = new HashSet<string>(categoria);
+                        HashSet<string> PalabrasCategoria = new HashSet<string>(ListaDeCategorías[NombreCategoria]);
                         inventario.IntersectWith(PalabrasCategoria);
+                        conjuntos += SetToString(inventario);
                         completa &= inventario.Any<string>();
                     }
                     if (completa)
                     {
+                        Console.WriteLine(conjuntos + " " + registro);
                         return completa;
                     }
                     else
@@ -272,23 +274,6 @@ namespace IdentificacionRegistros
             {
                 return false;
             }
-            
-            // Suponemos que las palabras no se repiten
-            // queremos evitar la búsqueda de las palabras en toda la estructura de datos
-            // hacer la búsqueda únicamente cuando haya chance de encontrar algo
-            /*
-            if ((MínimoPalabras <= cuenta) && (cuenta <= MáximoPalabras))
-            {
-               
-                foreach(KeyValuePair<string, List<string>> entry in ListaDeConstrucciones)
-                {
-                    foreach(string str in entry.Value)
-                    {
-                        HashSet<string> PalabrasDelText = new HashSet<string>(listaPalabras);
-                    }
-                }
-            }
-            */
         }
 
         private static void DisplaySet(HashSet<string> set)
@@ -299,6 +284,17 @@ namespace IdentificacionRegistros
                 Console.Write(" {0}", str);
             }
             Console.WriteLine(" }");
+        }
+
+        private static string SetToString(HashSet<string> set)
+        {
+            string result = "{";
+            foreach (string str in set)
+            {
+                result += " " + str;
+            }
+            result += " } ";
+            return result;
         }
     }
 

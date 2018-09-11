@@ -192,31 +192,6 @@ namespace RegexExample
             pb.Close();
             Console.WriteLine(palabras);
             IdentificadorRegistros IR = new IdentificadorRegistros(palabras);
-            /*
-            IdentificadorRegistros IR = new IdentificadorRegistros(@"#1: outsorcing outsou outsourcing outsoursing outsurcing;
-               #2: administración administracióny administracioon administracioón administracón;
-               #3: personal depersonal dpersonal epersonal integralpersonal personalpara personals;
-               #4: servicios servicioss serviciosy sservicio sservicios vservicios yservicios;
-               #5: integrales integral  integralpersonal;
-               #6: técnicos técnico;
-               &1: #1;
-               &2: #2 #3;
-               &3: #4 #5;
-               &4: #4 #6; ");
-               */
-
-            /*
-            Console.WriteLine("Las separamos con regex");
-            MatchCollection PalabrasEscogidas = myRegex.Matches(palabras);
-            Console.WriteLine("Las almacenamos en un HashSet");
-            foreach (Match SomeMatch in PalabrasEscogidas)
-            {
-                CategoriaDePalabras.Add(SomeMatch.Groups[0].Value);
-                Console.WriteLine(SomeMatch.Groups[0].Value);
-            }
-            Console.WriteLine("Estas son las palabras buscadas");
-            Console.ReadKey();
-            */
             Console.WriteLine("Leemos la BD para buscar los registros de interés");
 
             /* La idea es simple, obtenemos los campos que pueden tener texto únicamente y usaando la expresión regular sacamos
